@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 (http://www.altova.com) by  () -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="PIPELINE_DATA">
+		<xs:annotation>
+			<xs:documentation>Набор данных о  трубопроводной сети</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pipeline_set"/>
+				<xs:element ref="tech_section_set"/>
+				<xs:element ref="processing_area_set"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="pipeline_set">
+		<xs:annotation>
+			<xs:documentation>набор магистральных трубопроводов сети</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence maxOccurs="unbounded">
+				<xs:element name="pipeline">
+					<xs:annotation>
+						<xs:documentation>магистральный трубопровод</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="pipeline_start">
+								<xs:annotation>
+									<xs:documentation>ссылка на ID технологической площадки в начале трубопровода</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="processing_area_ID" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="pipeline_end">
+								<xs:annotation>
+									<xs:documentation>ссылка на ID технологической площадки в конце трубопровода</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="processing_area_ID" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="previous_pipeline">
+								<xs:annotation>
+									<xs:documentation>информация о предшествующем магистральном трубопроводе</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:choice>
+										<xs:element name="previous_pipeline_ID" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="pipeline_ID" use="required">
+													<xs:annotation>
+														<xs:documentation>ссылка на ID предшествующего магистрального трубопровода</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="THIS_IS_START_SECTION"/>
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="ID" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="tech_section_set">
+		<xs:annotation>
+			<xs:documentation>набор технологических участков сети</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence maxOccurs="unbounded">
+				<xs:element name="tech_section">
+					<xs:annotation>
+						<xs:documentation>теххнологический участок</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="technological_section_start">
+								<xs:annotation>
+									<xs:documentation>ссылка на ID резервуара и ID нефтеперекачивающей станции в начале технологического участка</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="tank_ID" use="required"/>
+									<xs:attribute name="pumping_station_ID" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="technological_section_end">
+								<xs:annotation>
+									<xs:documentation>ссылка на ID резервуара и ID нефтеперекачивающей станции в конце технологического участка</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="tank_ID" use="required"/>
+									<xs:attribute name="pumping_station_ID" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="transfer_stations" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence maxOccurs="unbounded">
+										<xs:element name="transfer_station">
+											<xs:complexType>
+												<xs:attribute name="pumping_station_ID" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="parent_pipelines">
+								<xs:complexType>
+									<xs:sequence maxOccurs="unbounded">
+										<xs:element name="parent_pipeline_ID">
+											<xs:complexType>
+												<xs:attribute name="pipeline_ID" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="ID" use="required"/>
+						<xs:attribute name="fluid_type" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="processing_area_set">
+		<xs:annotation>
+			<xs:documentation>набор технологических площадок сети</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence maxOccurs="unbounded">
+				<xs:element name="processing_area">
+					<xs:annotation>
+						<xs:documentation>технологическая площадка</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="pumping_station_set">
+								<xs:annotation>
+									<xs:documentation>набор нефтеперекачивающих станций на конкретной технологической площадке</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence maxOccurs="unbounded">
+										<xs:element name="pumping_station">
+											<xs:annotation>
+												<xs:documentation>нефтеперекачивающая станция</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:attribute name="ID" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="tank_set" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>набор резевуаров парков на конкретной технологической площадке</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence maxOccurs="unbounded">
+										<xs:element name="tank">
+											<xs:annotation>
+												<xs:documentation>резервуар парков</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:attribute name="ID" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="ID" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
